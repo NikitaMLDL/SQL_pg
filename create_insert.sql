@@ -1,30 +1,22 @@
--- Создание таблицы нарушений ПДД
 CREATE TABLE viols (
-    tr_viol_id  BIGINT PRIMARY KEY,                     -- Идентификатор нарушения
-    viol_code   INTEGER NOT NULL,                       -- Код нарушения ПДД
-    time_check  TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,-- Дата и время нарушения ПДД
-    stage_code  INTEGER NOT NULL,                       -- Этап обработки нарушения ПДД
-    refuse_code INTEGER NOT NULL,                       -- Результирующий код обработки нарушения ПДД
-    camera_id   INTEGER NOT NULL                        -- Идентификатор камеры, зафиксировавшей нарушение
-);
+    tr_viol_id  BIGINT PRIMARY KEY,                     
+    viol_code   INTEGER NOT NULL,                       
+    time_check  TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+    stage_code  INTEGER NOT NULL,                     
+    refuse_code INTEGER NOT NULL,                       
+    camera_id   INTEGER NOT NULL                     
 
--- Создание таблицы операций обработки нарушений
 CREATE TABLE opers (
-    viol_oper_id  BIGINT PRIMARY KEY,                   -- Идентификатор операции обработки
-    tr_viol_id    BIGINT NOT NULL,                      -- Идентификатор нарушения ПДД
-    oper_code     INTEGER NOT NULL,                     -- Тип операции обработки нарушения ПДД
-    refuse_code   INTEGER NOT NULL,                     -- Результирующий код операции обработки
-    isp_id        BIGINT NOT NULL,                      -- Идентификатор того, кто произвел обработку
-    date_oper     TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, -- Дата и время операции обработки
-    viol_datetime TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, -- Дата и время нарушения
-
-    -- Внешний ключ для связи с таблицей нарушений
+    viol_oper_id  BIGINT PRIMARY KEY,                 
+    tr_viol_id    BIGINT NOT NULL,                       
+    oper_code     INTEGER NOT NULL,                    
+    refuse_code   INTEGER NOT NULL,                     
+    isp_id        BIGINT NOT NULL,                      
+    date_oper     TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
+    viol_datetime TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
     CONSTRAINT fk_opers_viols FOREIGN KEY (tr_viol_id) REFERENCES viols (tr_viol_id) ON DELETE CASCADE
 );
 
-
-
--- Заполнение таблицы нарушений ПДД (viols)
 INSERT INTO viols (tr_viol_id, viol_code, time_check, stage_code, refuse_code, camera_id) VALUES
 (1, 101, '2018-04-01 10:15:00', 1, 0, 5),
 (2, 102, '2018-04-01 12:30:00', 2, 1, 8),
@@ -37,7 +29,7 @@ INSERT INTO viols (tr_viol_id, viol_code, time_check, stage_code, refuse_code, c
 (9, 104, '2018-04-08 08:55:00', 3, 1, 1),
 (10, 105, '2018-04-09 17:30:00', 2, 0, 10);
 
--- Заполнение таблицы операций обработки нарушений (opers)
+
 INSERT INTO opers (viol_oper_id, tr_viol_id, oper_code, refuse_code, isp_id, date_oper, viol_datetime) VALUES
 (1, 1, 29, 0, 1001, '2018-04-01 11:00:00', '2018-04-01 10:15:00'),
 (2, 2, 15, 1, 1002, '2018-04-01 13:00:00', '2018-04-01 12:30:00'),
